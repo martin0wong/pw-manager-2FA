@@ -4,6 +4,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <ctime>
+#include "pwgen.h"
 using namespace std;
 
 bool checkPasswordLength(string str, int& passwordLength) {
@@ -12,12 +13,12 @@ bool checkPasswordLength(string str, int& passwordLength) {
         passwordLength = stoi(str);
     }
     catch (...) {
-        cout << "Invalid password length. Please enter a number between 8 and 50." << endl;
+        cout << "Please ensure you enter a number between 8 and 50." << endl;
         return false;
     }
 
     if (passwordLength < 8 || passwordLength > 50) {
-        cout << "Invalid password length.\nPlease enter a number between 8 and 50." << endl;
+        cout << "Invalid password length, this is too weak!\nPlease enter a number between 8 and 50." << endl;
         return false;
     }
     return true;
@@ -44,7 +45,7 @@ set<int> getOptions() {
         cout << "\tSymbols (i.e. !@#) - SYM" << endl;
         cout << "\tAll - AL" << endl << endl;
 
-        cout << "You may choose All or any combination of the options.\nType all desired options separated by a space, then hit \"ENTER\"." << endl << endl;
+        cout << "You may choose ALL or any combination of the options.\nType ALL desired options separated by a space, then hit \"ENTER\"." << endl << endl;
         cout << "Option(s): ";
 
         // take input
@@ -153,9 +154,11 @@ string generatePassword(set<int>* options, int passwordLength) {
     return password;
 }
 
-int main(int argc, char* argv[]) {
+void getNewPassword(int argc, char* argv[]) {
     int passwordLength;
     bool validLength = false;
+
+    set<int> options = getOptions();
 
     if (argc > 1) {
         passwordLength = checkPasswordLength(argv[1], passwordLength);
@@ -165,11 +168,7 @@ int main(int argc, char* argv[]) {
         validLength = getPasswordLength(passwordLength);
     }
 
-    set<int> options = getOptions();
-
     srand((unsigned)time(0));
     cout << endl;
     cout << generatePassword(&options, passwordLength) << endl;
-
-    return 0;
 }
