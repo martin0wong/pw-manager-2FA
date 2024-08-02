@@ -1,8 +1,9 @@
 #include <iostream>
 #include <string>
 #include "pwgen.h"
+using namespace pwgen;
 
-int main(int argc, char* argv[]) {
-    getNewPassword(argc, argv);
+int main() {
+    getNewPassword();
     return 0;
 }

@@ -2,6 +2,8 @@
 #define pwgen_h
 using namespace std;
 
-void getNewPassword(int argc, char* argv[]);
+namespace pwgen {
+	void getNewPassword();
+}
 
 #endif
