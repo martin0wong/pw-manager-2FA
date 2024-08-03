@@ -39,9 +39,9 @@ int main() {
         case 1:
             getNewPassword();
             break;
-        case 2:
+        /*case 2:
             managePasswords();
-            break;
+            break;*/
         case -1:
             cout << "Exiting program..." << endl;
 			break;
