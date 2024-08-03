@@ -43,7 +43,7 @@ namespace pwgenHelper {
             cout << "\tSymbols (i.e. !@#) - SYM" << endl;
             cout << "\tAll - AL" << endl << endl;
 
-            cout << "You may choose ALL or any combination of the options.\nType ALL desired options separated by a space, then hit \"ENTER\"." << endl << endl;
+            cout << "You may choose ALL or any combination of the options.\nType ALL desired options separated by a space, then hit \"ENTER\"." << endl;
             cout << "Option(s): ";
 
             // take input
