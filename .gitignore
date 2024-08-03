@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /project/project.vcxproj.filters
 /project/project.vcxproj
+/pw-2FA/pw-2FA.vcxproj
+/pw-2FA/pw-2FA.vcxproj.filters

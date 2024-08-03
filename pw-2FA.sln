@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "project", "project\project.vcxproj", "{AA0C6739-9AE2-484B-ACC2-2B626D73EA80}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pw-2FA", "pw-2FA\pw-2FA.vcxproj", "{AA0C6739-9AE2-484B-ACC2-2B626D73EA80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
