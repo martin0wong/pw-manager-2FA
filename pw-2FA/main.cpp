@@ -5,7 +5,6 @@ using namespace pwgen;
 using namespace std;
 
 int option = 0;
-
 int getOption() {
     bool validOption = false;
     // loop until valid options are chosen
