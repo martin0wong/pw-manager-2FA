@@ -7,11 +7,11 @@
 #include "pwgen.h"
 using namespace std;
 
-namespace {
+namespace pwgenHelper {
     // Get and validate password length from the user
     bool getPasswordLength(int& passwordLength) {
         string str;
-        cout << "Password length: ";
+        cout << "Password length: " << endl;
         getline(cin, str);
 
         try {
@@ -160,14 +160,14 @@ namespace pwgen {
         int passwordLength;
         bool validLength = false;
 
-        set<int> options = getOptions();
+        set<int> options = pwgenHelper::getOptions();
 
         while (!validLength) {
-            validLength = getPasswordLength(passwordLength);
+            validLength = pwgenHelper::getPasswordLength(passwordLength);
         }
 
         srand((unsigned)time(0));
         cout << endl;
-        cout << generatePassword(&options, passwordLength) << endl;
+        cout << pwgenHelper::generatePassword(&options, passwordLength) << endl;
     }
 }
