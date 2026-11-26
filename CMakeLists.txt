@@ -1,0 +1,37 @@
+cmake_minimum_required(VERSION 3.20)
+project(pw_2FA LANGUAGES CXX)
+
+if(NOT WIN32)
+    message(FATAL_ERROR "pw-2FA requires Windows Credential Manager and CNG.")
+endif()
+
+add_library(pw_core STATIC pw-2FA/console.cpp pw-2FA/pwgen.cpp pw-2FA/vault.cpp pw-2FA/totp.cpp)
+target_compile_features(pw_core PUBLIC cxx_std_17)
+target_compile_definitions(pw_core PUBLIC WIN32_LEAN_AND_MEAN NOMINMAX _WIN32_WINNT=0x0A00)
+target_include_directories(pw_core PUBLIC pw-2FA)
+target_link_libraries(pw_core PUBLIC advapi32 bcrypt)
+
+add_executable(pw-2FA pw-2FA/main.cpp pw-2FA/pwmanager.cpp)
+target_link_libraries(pw-2FA PRIVATE pw_core)
+
+include(CTest)
+if(BUILD_TESTING)
+    add_executable(pw_tests tests/pw_tests.cpp)
+    target_link_libraries(pw_tests PRIVATE pw_core)
+    add_test(NAME crypto_and_validation COMMAND pw_tests)
+    add_test(NAME credential_store COMMAND pw_tests vault)
+    add_test(NAME cli_redirects COMMAND "${CMAKE_COMMAND}"
+        "-DAPP=$<TARGET_FILE:pw-2FA>" -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/cli.cmake")
+    set_tests_properties(crypto_and_validation credential_store cli_redirects PROPERTIES TIMEOUT 15)
+endif()
+
+foreach(target pw_core pw-2FA pw_tests)
+    if(TARGET ${target})
+        if(MSVC)
+            target_compile_options(${target} PRIVATE /W4 /sdl /guard:cf /permissive-)
+            target_link_options(${target} PRIVATE /guard:cf /DYNAMICBASE /NXCOMPAT)
+        else()
+            target_compile_options(${target} PRIVATE -Wall -Wextra -Wpedantic -fstack-protector-strong)
+        endif()
+    endif()
+endforeach()

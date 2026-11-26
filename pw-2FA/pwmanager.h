@@ -1,9 +1,7 @@
-#ifndef pwmanager_h
-#define pwmanager_h
-using namespace std;
+#pragma once
+
+#include "vault.h"
 
 namespace pwManager {
-	void startManager();
+    void startManager(vault::Kind kind);
 }
-
-#endif

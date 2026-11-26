@@ -1,54 +1,26 @@
-#include <iostream>
-#include <string>
+#include "console.h"
 #include "pwgen.h"
-using namespace pwgen;
-using namespace std;
-
-int option = 0;
-int getOption() {
-    bool validOption = false;
-    // loop until valid options are chosen
-    while (!validOption) {
-        // display options
-        cout << "Enter option number to proceed:" << endl;
-        cout << "\t 1. Generate password" << endl;
-        cout << "\t 2. Manage passwords" << endl;
-        cout << "\t 3. Exit (enter -1)" << endl;
-        cout << "Option: ";
-
-        // take input
-        string optionInput;
-        getline(cin, optionInput);
-
-        try {
-            // convert input to int
-            int option = stoi(optionInput);
-            validOption = true;
-            return option;
-        } catch (const exception& e) {
-            cout << "Invalid entry. Please enter a number." << endl;
-        }
-    }
-    return 0;
-}
+#include "pwmanager.h"
+#include <iostream>
 
 int main() {
-    while (option > -1) {
-        option = getOption();
-        switch (option) {
-        case 1:
-            getNewPassword();
-            break;
-        /*case 2:
-            managePasswords();
-            break;*/
-        case -1:
-            cout << "Exiting program..." << endl;
-			break;
-        default:
-            cout << "Invalid entry. Please enter a valid option." << endl;
-			break;
-		}
+    std::string option;
+    while (console::line("\n1. Generate password  2. Manage passwords  3. Authenticator  0. Exit\nOption: ", option)) {
+        try {
+            if (option == "0" || option == "-1") {
+                return 0;
+            }
+            if (option == "1") {
+                pwgen::getNewPassword();
+            } else if (option == "2") {
+                pwManager::startManager(vault::Kind::password);
+            } else if (option == "3") {
+                pwManager::startManager(vault::Kind::authenticator);
+            } else {
+                std::cout << "Choose an option from the menu.\n";
+            }
+        } catch (const std::exception& error) {
+            std::cerr << error.what() << '\n';
+        }
     }
-    return 0;
 }
