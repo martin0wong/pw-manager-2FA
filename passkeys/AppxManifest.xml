@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+         xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+         IgnorableNamespaces="uap com rescap">
+  <Identity Name="Pw2FA.Passkeys" Publisher="CN=pw-2FA Local Development" Version="1.0.0.0" ProcessorArchitecture="x64"/>
+  <Properties>
+    <DisplayName>pw-2FA Passkeys</DisplayName>
+    <PublisherDisplayName>pw-2FA</PublisherDisplayName>
+    <Logo>Assets\Store.png</Logo>
+  </Properties>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.26100.6725" MaxVersionTested="10.0.26200.6725"/>
+  </Dependencies>
+  <Resources>
+    <Resource Language="en-US"/>
+  </Resources>
+  <Applications>
+    <Application Id="Passkeys" Executable="pw-2FA-passkeys.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements DisplayName="pw-2FA Passkeys" Description="Manage local website passkeys"
+                          BackgroundColor="transparent" Square150x150Logo="Assets\Tile.png"
+                          Square44x44Logo="Assets\App.png"/>
+      <Extensions>
+        <com:Extension Category="windows.comServer">
+          <com:ComServer>
+            <com:ExeServer Executable="pw-2FA-passkeys.exe" Arguments="--provider" DisplayName="pw-2FA Passkeys">
+              <com:Class Id="f3522273-e805-407b-95ad-89464a984c34" DisplayName="pw-2FA Passkeys"/>
+            </com:ExeServer>
+          </com:ComServer>
+        </com:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust"/>
+  </Capabilities>
+</Package>

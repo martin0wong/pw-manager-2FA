@@ -1,5 +1,7 @@
 # Password Manager & 2FA Authenticator
 
+> **Personal passion project.** This is a legacy side project shared for learning and experimentation. It is not an actively maintained password manager or authenticator. Use test credentials and keep real accounts in a maintained password manager.
+
 A local Windows command-line app for generating passwords, storing credentials, and displaying time-based one-time codes.
 
 ## Build and test
@@ -20,6 +22,22 @@ Run the app in an interactive Windows console. The credential-store test creates
 - **Generate password** uses Windows cryptographic randomness. The default is 24 characters using lowercase, uppercase, digits, and symbols. Keep that default or choose the length and character sets an account accepts.
 - **Manage passwords** lets you save, replace, list, reveal, and delete passwords. Type a password with input hidden or generate one directly into storage. Use a label such as `example.com / username`. Labels are case-insensitive and can contain up to 120 printable ASCII characters.
 - **Authenticator** accepts the manual Base32 setup key from a service. It supports six-digit HMAC-SHA-1 codes with 30-second periods. [RFC 6238](https://www.rfc-editor.org/rfc/rfc6238)
+
+## Local website passkeys (preview)
+
+The optional **pw-2FA Passkeys** app is a Windows WebAuthn provider. Sites create and use passkeys through the browser’s Windows prompt. The provider stores P-256 signing keys in the Windows software key store with export disabled and saves account metadata separately. It requests Windows Hello verification for each browser operation. Keys stay on this device and there is no sync or export. Software running as your Windows user is within the trust boundary of the software key store. [Microsoft WebAuthn plugin documentation](https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/webauthn-apis)
+
+Build in an x64 Visual Studio Developer Command Prompt with an updated Windows SDK that includes `webauthnplugin.h`. Use Windows 11 24H2 build 26100.6725 or newer with Windows Hello configured. Launch a Windows PowerShell session from the same directory for the staging steps. The unsigned development folder requires Windows Developer Mode to register.
+
+```powershell
+cmake -S . -B build/passkeys -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_PASSKEY_PROVIDER=ON
+cmake --build build/passkeys
+ctest --test-dir build/passkeys --output-on-failure
+.\passkeys\Stage-Passkeys.ps1 -Executable .\build\passkeys\pw-2FA-passkeys.exe -Destination .\build\passkey-package
+Add-AppxPackage -Register (Resolve-Path .\build\passkey-package\AppxManifest.xml)
+```
+
+Open **pw-2FA Passkeys** from Start, register it, then enable it under **Settings > Accounts > Passkeys > Advanced options**. Use a disposable account at a WebAuthn test site to create a credential, restart the browser, sign in with it, and delete it from the app. Keep another sign-in or recovery method before deleting a passkey. Package installation and browser sign-in have not been verified on the development machine. [Microsoft passkey provider setup](https://learn.microsoft.com/en-us/windows/apps/develop/security/third-party)
 
 ## Security and recovery
 
